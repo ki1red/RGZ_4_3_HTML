@@ -18,40 +18,26 @@ long GetSize(const char nameFile[])
     return size;
 }
 
-const char* EditNameFile(const char nameFile [])
+const char* EditNameFile(const char nameFile[])
 {
     // Узнаем длину имени фала
     int size = strlen(nameFile);
-    // Создаём и массив и копируем в него строку
-    char* name = (char*)malloc((size+1)*sizeof(char)); 
-    strcpy(name,nameFile);
     
-    // Ищем, где заканчивается имя
-    int i;
-    for (i = size - 1; i >= 0; i--)
-        if (name[i] == '/')
-        {
-            i++;
-            break;
-        }
-    // Если названия файла содeржит только его имя (без пути к файлу)
-    if (i == -1)i = 0;
-        //return nameFile;
 
     // Создаём массив только под имя (без пути к файлу)
-    char *newName = (char*)malloc((size - i +5+1)); // 5 - "html/", size-i - "имя.html", 1 - '\0'
-    int j;
-    for (j = 5; i < size; i++, j++)
-        newName[j] = name[i];
+    char *newName = (char*)malloc((size +5+1)); // 5 - "html/", size - "имя.html", 1 - '\0'
+    int j,i;
+    for (j = 5,i=0; i < size; j++,i++)
+        newName[j] = nameFile[i];
     
-    free(name);
 
     newName[0] = 'h'; newName[1] = 't'; newName[2] = 'm'; newName[3] = 'l'; newName[4] = '/';
     newName[j] = '\0';
 
     
     const char* newNameFile = newName;
-    //free(newName);
+
+    // утечка newFile
 
     return newNameFile;
 }
